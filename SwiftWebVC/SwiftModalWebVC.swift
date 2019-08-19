@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class SwiftModalWebVC: UINavigationController {
+open class SwiftModalWebVC: UINavigationController {
     
     public enum SwiftModalWebVCTheme {
         case lightBlue, lightBlack, dark
@@ -17,7 +17,15 @@ public class SwiftModalWebVC: UINavigationController {
         case arrow, cross
     }
     
-    weak var webViewDelegate: UIWebViewDelegate? = nil
+    public weak var webDelegate: SwiftWebVCDelegate? {
+        get {
+            return swiftWebVC?.delegate
+        }
+        set {
+            swiftWebVC?.delegate = newValue
+        }
+    }
+    weak var swiftWebVC: SwiftWebVC?
     
     public convenience init(urlString: String, sharingEnabled: Bool = true) {
         var urlString = urlString
@@ -75,17 +83,14 @@ public class SwiftModalWebVC: UINavigationController {
             webViewController.navigationItem.rightBarButtonItem = doneButton
         }
         super.init(rootViewController: webViewController)
+        self.swiftWebVC = webViewController
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
     required public init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override public func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(false)
     }
 }
